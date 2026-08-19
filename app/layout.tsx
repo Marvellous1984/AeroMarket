@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { BRAND_NAME, TAGLINE, SITE_URL } from "@/lib/config/brand";
+import { ALLOW_INDEXING, BRAND_NAME, TAGLINE, SITE_URL } from "@/lib/config/brand";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     template: `%s · ${BRAND_NAME}`,
   },
   description: TAGLINE,
+  robots: ALLOW_INDEXING
+    ? undefined
+    : {
+        index: false,
+        follow: false,
+        nocache: true,
+        googleBot: { index: false, follow: false },
+      },
   openGraph: {
     siteName: BRAND_NAME,
     type: "website",

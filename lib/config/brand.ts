@@ -12,3 +12,7 @@ function withProtocol(url: string): string {
 export const SITE_URL = withProtocol(
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 );
+
+// Site stays out of search results until this is explicitly set to "true"
+// in the deployment's env vars — flip it on when ready to go live for real.
+export const ALLOW_INDEXING = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
