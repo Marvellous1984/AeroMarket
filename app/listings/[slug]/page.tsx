@@ -23,7 +23,7 @@ export async function generateMetadata({
   const listing = await getListingBySlug(params.slug);
   if (!listing) return {};
 
-  const title = `${getListingTitle(listing)} — ${getListingSubtitle(listing)}`;
+  const title = `${getListingTitle(listing)} · ${getListingSubtitle(listing)}`;
   const description = [
     formatPrice(listing.price),
     listing.location,
@@ -105,7 +105,7 @@ export default async function ListingPage({
               <p className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl">
                 {formatPrice(listing.price)}
               </p>
-              <ShareButton title={title} text={`${title} — ${subtitle}`} />
+              <ShareButton title={title} text={`${title} · ${subtitle}`} />
             </div>
 
             <div className="mt-10">

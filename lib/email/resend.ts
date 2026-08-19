@@ -16,7 +16,7 @@ export async function sendEnquiryEmails(
   const resend = getResend();
   const timestamp = new Date().toISOString();
   const listingLabel = `${listing.manufacturer} ${listing.model}${
-    listing.share_fraction ? ` — ${listing.share_fraction} share` : ""
+    listing.share_fraction ? ` (${listing.share_fraction} share)` : ""
   }`;
 
   await resend.emails.send({
@@ -28,23 +28,23 @@ export async function sendEnquiryEmails(
       `Listing: ${listingLabel} (${listing.slug})`,
       `Name: ${enquiry.name}`,
       `Email: ${enquiry.email}`,
-      `Phone: ${enquiry.phone || "—"}`,
+      `Phone: ${enquiry.phone || "Not provided"}`,
       "",
       "Message:",
       enquiry.message,
       "",
       `Timestamp: ${timestamp}`,
-      `Referrer: ${enquiry.referrer || "—"}`,
-      `UTM source: ${enquiry.utmSource || "—"}`,
-      `UTM medium: ${enquiry.utmMedium || "—"}`,
-      `UTM campaign: ${enquiry.utmCampaign || "—"}`,
+      `Referrer: ${enquiry.referrer || "Not provided"}`,
+      `UTM source: ${enquiry.utmSource || "Not provided"}`,
+      `UTM medium: ${enquiry.utmMedium || "Not provided"}`,
+      `UTM campaign: ${enquiry.utmCampaign || "Not provided"}`,
     ].join("\n"),
   });
 
   await resend.emails.send({
     to: enquiry.email,
     from: fromAddress(),
-    subject: `Enquiry received — ${listingLabel}`,
+    subject: `Enquiry received: ${listingLabel}`,
     text: [
       `Thanks ${enquiry.name}, your enquiry about the ${listingLabel} has been sent to the seller.`,
       "",
@@ -67,11 +67,11 @@ export async function sendSellerLeadEmail(lead: SellerLeadInput) {
       `Email: ${lead.email}`,
       `Aircraft type: ${lead.aircraftType}`,
       `Listing type: ${lead.listingType}`,
-      `Asking price: ${lead.askingPrice || "—"}`,
-      `Location: ${lead.location || "—"}`,
+      `Asking price: ${lead.askingPrice || "Not provided"}`,
+      `Location: ${lead.location || "Not provided"}`,
       "",
       "Message:",
-      lead.message || "—",
+      lead.message || "Not provided",
       "",
       `Timestamp: ${timestamp}`,
     ].join("\n"),

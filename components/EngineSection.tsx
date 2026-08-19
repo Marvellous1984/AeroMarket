@@ -5,7 +5,7 @@ export function EngineSection({ listing }: { listing: ListingRow }) {
   if (!listing.engine_summary) return null;
 
   const heading = listing.engine_rebuilt_date
-    ? `Factory-rebuilt engine — ${listing.engine_rebuilt_date}`
+    ? `Factory-rebuilt engine · ${listing.engine_rebuilt_date}`
     : "Engine";
 
   const enginePhoto = listing.images.find((img) =>

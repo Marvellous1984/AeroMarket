@@ -23,7 +23,7 @@ export default async function SharesPage() {
         </div>
       ) : (
         <p className="max-w-md text-muted">
-          No shares listed yet — check back soon, or{" "}
+          No shares listed yet. Check back soon, or{" "}
           <a href="/sell" className="text-accent hover:underline">
             let us know if you have one to sell
           </a>
