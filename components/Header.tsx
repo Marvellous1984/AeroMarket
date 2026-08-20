@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { BRAND_NAME } from "@/lib/config/brand";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-[1320px] items-center justify-between px-5 sm:h-24 sm:px-8 lg:px-10">
-        <Link href="/" aria-label="buy sell aircraft.com — home" className="shrink-0">
+        <Link href="/" aria-label={`${BRAND_NAME} — home`} className="shrink-0">
           <Logo className="text-[19px] sm:text-[22px] lg:text-[27px]" />
         </Link>
 

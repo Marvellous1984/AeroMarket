@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { TAGLINE } from "@/lib/config/brand";
+import { TAGLINE, DOMAIN_SUFFIX } from "@/lib/config/brand";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -87,7 +87,7 @@ export default async function Image() {
             aircraft
           </span>
           <span style={{ color: ORANGE, fontSize: 42, fontFamily: "Montserrat", fontWeight: 700 }}>
-            .com
+            {DOMAIN_SUFFIX}
           </span>
         </div>
         <div

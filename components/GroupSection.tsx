@@ -6,9 +6,9 @@ export function GroupSection({ listing }: { listing: ListingRow }) {
   return (
     <section>
       <h2 className="text-3xl font-semibold tracking-tight">The group</h2>
-      <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+      <ul className="mt-6 columns-1 gap-x-8 sm:columns-2">
         {listing.group_facts.map((fact) => (
-          <li key={fact} className="flex items-start gap-3">
+          <li key={fact} className="mb-4 flex break-inside-avoid items-start gap-3">
             <svg
               className="mt-1 shrink-0 text-accent"
               width="20"

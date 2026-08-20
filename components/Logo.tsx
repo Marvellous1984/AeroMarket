@@ -1,3 +1,5 @@
+import { DOMAIN_SUFFIX } from "@/lib/config/brand";
+
 function ExchangeIcon({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -26,9 +28,9 @@ function ExchangeIcon({ className = "" }: { className?: string }) {
   );
 }
 
-// Approved primary wordmark: buy [arrows] sell aircraft.com, always one
-// horizontal line. Do not stack, wrap, or otherwise re-lay this out —
-// see the brand guide for the approved lockup.
+// Approved primary wordmark: buy [arrows] sell aircraft + domain suffix,
+// always one horizontal line. Do not stack, wrap, or otherwise re-lay this
+// out — see the brand guide for the approved lockup.
 export function Logo({
   className = "",
   variant = "light",
@@ -47,7 +49,7 @@ export function Logo({
       <span className="text-accent">sell</span>
       <span className={aircraftColor}>
         aircraft
-        <span className="text-[0.56em] font-black text-accent">.com</span>
+        <span className="text-[0.56em] font-black text-accent">{DOMAIN_SUFFIX}</span>
       </span>
     </span>
   );
