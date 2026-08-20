@@ -65,7 +65,7 @@ insert into listings (
     {"src": "/images/listings/001/05-instrument-panel.jpg", "alt": "Instrument panel", "order": 5},
     {"src": "/images/listings/001/06-front-seats.jpg", "alt": "Front seats and interior", "order": 6},
     {"src": "/images/listings/001/07-rear-seating.jpg", "alt": "Rear seating", "order": 7},
-    {"src": "/images/listings/001/08-engine-cowling-open.svg", "alt": "Engine and cowling open", "order": 8},
+    {"src": "/images/listings/001/08-engine-cowling-open.jpg", "alt": "Engine and cowling open", "order": 8},
     {"src": "/images/listings/001/09-propeller-nose.jpg", "alt": "Propeller and nose", "order": 9},
     {"src": "/images/listings/001/11-blackbushe-apron.jpg", "alt": "Aircraft on the Blackbushe apron", "order": 10},
     {"src": "/images/listings/001/12-airfield-context.jpg", "alt": "Aircraft and airfield context", "order": 11}
