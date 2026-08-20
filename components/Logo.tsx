@@ -26,16 +26,29 @@ function ExchangeIcon({ className = "" }: { className?: string }) {
   );
 }
 
-export function Logo({ className = "" }: { className?: string }) {
+// Approved primary wordmark: buy [arrows] sell aircraft.com, always one
+// horizontal line. Do not stack, wrap, or otherwise re-lay this out —
+// see the brand guide for the approved lockup.
+export function Logo({
+  className = "",
+  variant = "light",
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+}) {
+  const aircraftColor = variant === "dark" ? "text-white" : "text-foreground";
+
   return (
     <span
-      className={`inline-flex items-baseline font-logo font-extrabold tracking-tight ${className}`}
+      className={`inline-flex flex-nowrap items-baseline gap-[0.16em] whitespace-nowrap font-sans font-black tracking-tight ${className}`}
     >
       <span className="text-accent">buy</span>
-      <ExchangeIcon className="mx-[0.12em] h-[0.5em] w-auto self-center text-accent" />
+      <ExchangeIcon className="h-[0.48em] w-auto shrink-0 self-center text-accent" />
       <span className="text-accent">sell</span>
-      <span className="text-foreground">aircraft</span>
-      <span className="ml-[0.05em] self-start text-[0.5em] font-bold text-accent">.com</span>
+      <span className={aircraftColor}>
+        aircraft
+        <span className="text-[0.56em] font-black text-accent">.com</span>
+      </span>
     </span>
   );
 }

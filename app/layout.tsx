@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -8,13 +8,6 @@ import { ALLOW_INDEXING, BRAND_NAME, TAGLINE, SITE_URL } from "@/lib/config/bran
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-});
-
-// Used only for the logo wordmark — body/UI text stays on Inter.
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["700", "800"],
-  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         <Header />
         <main>{children}</main>
         <Footer />

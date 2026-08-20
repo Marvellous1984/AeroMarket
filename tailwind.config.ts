@@ -20,7 +20,6 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
-        logo: ["var(--font-montserrat)", "sans-serif"],
       },
       borderRadius: {
         DEFAULT: "0.5rem",

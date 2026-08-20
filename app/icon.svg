@@ -2,6 +2,6 @@
   <rect width="100" height="100" rx="22" fill="#182230"/>
   <rect x="20" y="33.5" width="44" height="9" rx="4.5" fill="#C85A28"/>
   <polygon points="62,28 80,38 62,48" fill="#C85A28"/>
-  <rect x="36" y="57.5" width="44" height="9" rx="4.5" fill="#FFFFFF"/>
-  <polygon points="38,52 20,62 38,72" fill="#FFFFFF"/>
+  <rect x="36" y="57.5" width="44" height="9" rx="4.5" fill="#C85A28"/>
+  <polygon points="38,52 20,62 38,72" fill="#C85A28"/>
 </svg>
