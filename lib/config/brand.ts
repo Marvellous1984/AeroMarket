@@ -1,6 +1,4 @@
-// Brand name is not yet chosen — change this single value once it is.
-// Deliberately left as a placeholder rather than an invented name.
-export const BRAND_NAME = "[BRAND]";
+export const BRAND_NAME = "buysellaircraft.com";
 export const TAGLINE = "Aircraft and shares for sale, without the clutter.";
 
 // Tolerates NEXT_PUBLIC_SITE_URL being set without a protocol (e.g. a bare

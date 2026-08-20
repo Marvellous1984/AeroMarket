@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { BRAND_NAME } from "@/lib/config/brand";
+import { Logo } from "@/components/Logo";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-[1320px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
-          {BRAND_NAME}
+        <Link href="/" aria-label="buy sell aircraft.com — home">
+          <Logo className="text-lg sm:text-xl" />
         </Link>
 
         <nav className="hidden items-center gap-9 text-[15px] font-medium sm:flex">
