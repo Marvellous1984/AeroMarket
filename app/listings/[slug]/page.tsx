@@ -99,7 +99,12 @@ export default async function ListingPage({
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
               {title}
             </h1>
-            <p className="mt-2 text-lg font-medium text-muted">{subtitle}</p>
+            <p className="mt-2 text-lg font-medium text-muted">
+              {subtitle}
+              {listing.registration && listing.registration !== "[TO VERIFY]"
+                ? ` · ${listing.registration}`
+                : ""}
+            </p>
 
             <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
               <p className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl">

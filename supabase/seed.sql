@@ -32,7 +32,7 @@ insert into listings (
   'Piper',
   'PA-28 Cherokee 180',
   1967,
-  '[TO VERIFY]',
+  'G-AVSF',
   'Blackbushe Airport',
   'Blackbushe Airport',
   'EGLK',
