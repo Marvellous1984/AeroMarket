@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { TAGLINE } from "@/lib/config/brand";
 
 export const size = { width: 1200, height: 630 };
@@ -11,12 +13,8 @@ const ORANGE = "#C85A28";
 
 export default async function Image() {
   const [bold, regular] = await Promise.all([
-    fetch(new URL("./assets/Montserrat-Bold.ttf", import.meta.url)).then((r) =>
-      r.arrayBuffer(),
-    ),
-    fetch(new URL("./assets/Montserrat-Regular.ttf", import.meta.url)).then((r) =>
-      r.arrayBuffer(),
-    ),
+    readFile(path.join(process.cwd(), "app/assets/Montserrat-Bold.ttf")),
+    readFile(path.join(process.cwd(), "app/assets/Montserrat-Regular.ttf")),
   ]);
 
   return new ImageResponse(
