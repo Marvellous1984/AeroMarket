@@ -51,22 +51,24 @@ insert into listings (
     "Straightforward online booking system",
     "Very well-maintained aircraft",
     "New-member checkout",
-    "Flying abroad is permitted subject to the pilot''s licence, qualifications and applicable requirements"
+    "Flying abroad is permitted subject to the pilot''s licence, qualifications and applicable requirements",
+    "Includes four life vests and a life raft",
+    "Share includes 1/8 of the engine fund",
+    "Share includes a portion of the group''s accounts, including free landing fees at Blackbushe until the end of December 2026"
   ]'::jsonb,
   'The current insurance requirement is 100 hours total flying experience. A new member below the 100-hour level may potentially still join but would be responsible for the additional insurance premium and likely increased compulsory excess applicable until reaching the required experience level.',
   '[
-    {"src": "/images/listings/001/01-front-three-quarter.svg", "alt": "Front three-quarter exterior", "order": 1},
-    {"src": "/images/listings/001/02-side-profile.svg", "alt": "Side profile", "order": 2},
-    {"src": "/images/listings/001/03-rear-three-quarter.svg", "alt": "Rear three-quarter", "order": 3},
-    {"src": "/images/listings/001/04-cockpit-wide.svg", "alt": "Cockpit wide shot", "order": 4},
-    {"src": "/images/listings/001/05-instrument-panel.svg", "alt": "Instrument panel", "order": 5},
-    {"src": "/images/listings/001/06-front-seats.svg", "alt": "Front seats and interior", "order": 6},
-    {"src": "/images/listings/001/07-rear-seating.svg", "alt": "Rear seating", "order": 7},
+    {"src": "/images/listings/001/01-front-three-quarter.jpg", "alt": "Front three-quarter exterior", "order": 1},
+    {"src": "/images/listings/001/02-side-profile.jpg", "alt": "Side profile", "order": 2},
+    {"src": "/images/listings/001/03-rear-three-quarter.jpg", "alt": "Rear three-quarter", "order": 3},
+    {"src": "/images/listings/001/04-cockpit-wide.jpg", "alt": "Cockpit wide shot", "order": 4},
+    {"src": "/images/listings/001/05-instrument-panel.jpg", "alt": "Instrument panel", "order": 5},
+    {"src": "/images/listings/001/06-front-seats.jpg", "alt": "Front seats and interior", "order": 6},
+    {"src": "/images/listings/001/07-rear-seating.jpg", "alt": "Rear seating", "order": 7},
     {"src": "/images/listings/001/08-engine-cowling-open.svg", "alt": "Engine and cowling open", "order": 8},
-    {"src": "/images/listings/001/09-propeller-nose.svg", "alt": "Propeller and nose", "order": 9},
-    {"src": "/images/listings/001/10-undercarriage.svg", "alt": "Undercarriage", "order": 10},
-    {"src": "/images/listings/001/11-blackbushe-apron.svg", "alt": "Aircraft on the Blackbushe apron", "order": 11},
-    {"src": "/images/listings/001/12-airfield-context.svg", "alt": "Aircraft and airfield context", "order": 12}
+    {"src": "/images/listings/001/09-propeller-nose.jpg", "alt": "Propeller and nose", "order": 9},
+    {"src": "/images/listings/001/11-blackbushe-apron.jpg", "alt": "Aircraft on the Blackbushe apron", "order": 10},
+    {"src": "/images/listings/001/12-airfield-context.jpg", "alt": "Aircraft and airfield context", "order": 11}
   ]'::jsonb,
   now()
 );
