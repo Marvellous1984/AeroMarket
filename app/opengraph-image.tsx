@@ -7,6 +7,8 @@ export const contentType = "image/png";
 // asset-resolution bug hit during static prerendering in some environments.
 export const dynamic = "force-dynamic";
 
+const ORANGE = "#C85A28";
+
 export default async function Image() {
   const [bold, regular] = await Promise.all([
     fetch(new URL("./assets/Montserrat-Bold.ttf", import.meta.url)).then((r) =>
@@ -32,36 +34,49 @@ export default async function Image() {
         }}
       >
         <div style={{ display: "flex", alignItems: "baseline" }}>
-          <span style={{ color: "#C85A28", fontSize: 76, fontFamily: "Montserrat", fontWeight: 700 }}>
+          <span style={{ color: ORANGE, fontSize: 76, fontFamily: "Montserrat", fontWeight: 700 }}>
             buy
           </span>
-          <svg
-            width="58"
-            height="42"
-            viewBox="0 0 22 16"
-            fill="none"
-            style={{ margin: "0 16px" }}
+
+          {/* exchange arrows, built from plain boxes/borders */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignSelf: "center",
+              margin: "0 20px",
+              gap: 8,
+            }}
           >
-            <path d="M1 5.5H19" stroke="#C85A28" strokeWidth="2.6" strokeLinecap="round" />
-            <path
-              d="M14.5 1L19 5.5L14.5 10"
-              stroke="#C85A28"
-              strokeWidth="2.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path d="M21 10.5H3" stroke="#C85A28" strokeWidth="2.6" strokeLinecap="round" />
-            <path
-              d="M7.5 15L3 10.5L7.5 6"
-              stroke="#C85A28"
-              strokeWidth="2.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ width: 40, height: 7, backgroundColor: ORANGE }} />
+              <div
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: "6px solid transparent",
+                  borderBottom: "6px solid transparent",
+                  borderLeft: `11px solid ${ORANGE}`,
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: "6px solid transparent",
+                  borderBottom: "6px solid transparent",
+                  borderRight: `11px solid ${ORANGE}`,
+                }}
+              />
+              <div style={{ width: 40, height: 7, backgroundColor: ORANGE }} />
+            </div>
+          </div>
+
           <span
             style={{
-              color: "#C85A28",
+              color: ORANGE,
               fontSize: 76,
               fontFamily: "Montserrat",
               fontWeight: 700,
@@ -73,7 +88,7 @@ export default async function Image() {
           <span style={{ color: "#ffffff", fontSize: 76, fontFamily: "Montserrat", fontWeight: 700 }}>
             aircraft
           </span>
-          <span style={{ color: "#C85A28", fontSize: 42, fontFamily: "Montserrat", fontWeight: 700 }}>
+          <span style={{ color: ORANGE, fontSize: 42, fontFamily: "Montserrat", fontWeight: 700 }}>
             .com
           </span>
         </div>
