@@ -2,7 +2,7 @@
 
 import { formatPrice } from "@/lib/format";
 
-export function StickyMobileCta({ price }: { price: number }) {
+export function StickyMobileCta({ price }: { price: number | null }) {
   function scrollToEnquiry() {
     document
       .getElementById("enquiry")

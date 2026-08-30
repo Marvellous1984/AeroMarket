@@ -1,10 +1,36 @@
 export type ListingType = "whole" | "share";
+// "active" is this system's "live" state — publicly listed, indexable, open
+// to enquiries. Kept as "active" rather than renamed to "live" to avoid an
+// enum migration touching already-live rows; see lib/listing.ts for the
+// isDraft/isLive helpers future listings should use instead of comparing
+// status strings directly.
 export type ListingStatus = "draft" | "active" | "sold";
 
 export interface ListingImage {
   src: string;
   alt: string;
   order: number;
+}
+
+export interface ListingFact {
+  label: string;
+  value: string;
+}
+
+// Small, fixed set of icons the highlight cards can render — not an
+// open-ended icon system, just enough to cover the kinds of facts a listing
+// highlights (ownership, cost, engine, speed, capability, ...).
+export type HighlightIconKey =
+  | "ownership"
+  | "calendar"
+  | "clock"
+  | "gauge"
+  | "shield"
+  | "bolt"
+  | "cloud";
+
+export interface ListingHighlight extends ListingFact {
+  icon: HighlightIconKey;
 }
 
 export interface ListingRow {
@@ -19,8 +45,9 @@ export interface ListingRow {
   location: string;
   airport_name: string | null;
   airport_code: string | null;
-  price: number;
+  price: number | null;
   share_fraction: string | null;
+  contact_email: string | null;
   monthly_cost: number | null;
   hourly_cost: number | null;
   engine_summary: string | null;
@@ -30,6 +57,17 @@ export interface ListingRow {
   description: string | null;
   group_facts: string[];
   insurance_info: string | null;
+  // Scannable checklist version of the pilot/insurance requirements —
+  // preferred over insurance_info (a single paragraph) when present.
+  insurance_points: string[] | null;
+  // Highlight/fact cards near the top of the listing. When null/empty, the
+  // UI derives an equivalent set from the older dedicated columns
+  // (share_fraction, monthly_cost, hourly_cost, engine_hours_since_rebuild,
+  // insured_hull_value) — see components/HighlightCards.tsx. New listings
+  // should set this directly instead of relying on that fallback.
+  highlights: ListingHighlight[] | null;
+  // Avionics/equipment spec rows, e.g. { label: "Engine", value: "..." }.
+  equipment: ListingFact[] | null;
   images: ListingImage[];
   created_at: string;
   published_at: string | null;

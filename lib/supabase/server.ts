@@ -23,6 +23,11 @@ export function createClient() {
           // No auth/session writes in this app — reads are anonymous.
         },
       },
+      // Listing content is edited directly in the database — Next.js's
+      // fetch patching would otherwise cache these requests in its Data
+      // Cache, so an edit wouldn't show up until something invalidated it.
+      // Always hit Supabase fresh.
+      global: { fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }) },
     },
   );
 }

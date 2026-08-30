@@ -19,10 +19,19 @@ export async function sendEnquiryEmails(
     listing.share_fraction ? ` (${listing.share_fraction} share)` : ""
   }`;
 
+  // Listings can name their own enquiry inbox (e.g. an external seller's
+  // address) instead of the shared marketplace inbox. BCC the shared inbox
+  // whenever that happens, so enquiries for hand-curated external listings
+  // stay visible — but not when the seller address already *is* the shared
+  // inbox, which would just send the same email to it twice.
+  const adminAddress = toAddress();
+  const sellerAddress = listing.contact_email || adminAddress;
+
   await resend.emails.send({
-    to: toAddress(),
+    to: sellerAddress,
     from: fromAddress(),
     replyTo: enquiry.email,
+    ...(sellerAddress !== adminAddress ? { bcc: adminAddress } : {}),
     subject: `New enquiry: ${listingLabel}`,
     text: [
       `Listing: ${listingLabel} (${listing.slug})`,

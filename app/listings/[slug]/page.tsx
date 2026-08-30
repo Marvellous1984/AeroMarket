@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getListingBySlug } from "@/lib/data/listings";
-import { getListingSubtitle, getListingTitle } from "@/lib/listing";
+import { getListingSubtitle, getListingTitle, isDraftListing } from "@/lib/listing";
 import { formatPrice } from "@/lib/format";
 import { BRAND_NAME, SITE_URL } from "@/lib/config/brand";
+import { DraftBanner } from "@/components/DraftBanner";
 import { Gallery } from "@/components/Gallery";
-import { OwnershipSnapshot } from "@/components/OwnershipSnapshot";
+import { HighlightCards } from "@/components/HighlightCards";
 import { EngineSection } from "@/components/EngineSection";
+import { EquipmentSection } from "@/components/EquipmentSection";
 import { GroupSection } from "@/components/GroupSection";
 import { AirportSection } from "@/components/AirportSection";
 import { InsuranceSection } from "@/components/InsuranceSection";
@@ -37,6 +39,11 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `${SITE_URL}/listings/${listing.slug}` },
+    // Draft listings must never be indexed, regardless of the site-wide
+    // robots.ts allow/disallow toggle — this is a per-listing override.
+    robots: isDraftListing(listing)
+      ? { index: false, follow: false }
+      : undefined,
     openGraph: {
       title: `${title} · ${BRAND_NAME}`,
       description,
@@ -64,29 +71,38 @@ export default async function ListingPage({
   const title = getListingTitle(listing);
   const subtitle = getListingSubtitle(listing);
   const paragraphs = listing.description?.split("\n\n") ?? [];
+  const isDraft = isDraftListing(listing);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: title,
-    description: listing.description ?? undefined,
-    image: listing.images.map((img) => `${SITE_URL}${img.src}`),
-    offers: {
-      "@type": "Offer",
-      price: listing.price,
-      priceCurrency: "GBP",
-      availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/listings/${listing.slug}`,
-    },
-  };
+  // Draft listings are excluded from structured data for public marketplace
+  // inventory — they aren't for sale yet as far as the outside world knows.
+  const jsonLd = isDraft
+    ? null
+    : {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: title,
+        description: listing.description ?? undefined,
+        image: listing.images.map((img) => `${SITE_URL}${img.src}`),
+        offers: {
+          "@type": "Offer",
+          ...(listing.price !== null ? { price: listing.price } : {}),
+          priceCurrency: "GBP",
+          availability: "https://schema.org/InStock",
+          url: `${SITE_URL}/listings/${listing.slug}`,
+        },
+      };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {jsonLd ? (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      ) : null}
+
+      {isDraft ? <DraftBanner /> : null}
 
       <div className="mx-auto max-w-[1320px] px-5 pb-28 pt-8 sm:px-8 sm:pb-16 lg:px-10">
         <Gallery images={listing.images} />
@@ -114,7 +130,7 @@ export default async function ListingPage({
             </div>
 
             <div className="mt-10">
-              <OwnershipSnapshot listing={listing} />
+              <HighlightCards listing={listing} />
             </div>
 
             {paragraphs.length > 0 ? (
@@ -127,6 +143,10 @@ export default async function ListingPage({
 
             <div className="mt-12">
               <EngineSection listing={listing} />
+            </div>
+
+            <div className="mt-14">
+              <EquipmentSection listing={listing} />
             </div>
 
             <div className="mt-14">
@@ -143,13 +163,17 @@ export default async function ListingPage({
           </div>
 
           <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
-            <EnquiryForm listing={listing} />
+            <EnquiryForm
+              listingId={listing.id}
+              isShare={listing.listing_type === "share"}
+              isDraft={isDraft}
+            />
             <SellerMiniCta />
           </aside>
         </div>
       </div>
 
-      <StickyMobileCta price={listing.price} />
+      {isDraft ? null : <StickyMobileCta price={listing.price} />}
     </>
   );
 }

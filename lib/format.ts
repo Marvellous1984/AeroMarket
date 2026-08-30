@@ -1,4 +1,8 @@
-export function formatPrice(value: number): string {
+// Some listings (e.g. equity shares where price depends on the individual
+// seller) have no fixed asking price. Callers pass `listing.price` straight
+// through rather than special-casing null themselves.
+export function formatPrice(value: number | null): string {
+  if (value === null) return "Price on enquiry";
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: "GBP",

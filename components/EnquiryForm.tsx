@@ -2,11 +2,22 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
-import type { ListingRow } from "@/lib/types/database";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function EnquiryForm({ listing }: { listing: ListingRow }) {
+// Deliberately takes only the primitives this form needs, rather than the
+// full ListingRow — client component props are serialized into the page's
+// RSC payload, so passing the whole row would ship fields like
+// contact_email (a seller's personal address) to every visitor's browser.
+export function EnquiryForm({
+  listingId,
+  isShare,
+  isDraft,
+}: {
+  listingId: string;
+  isShare: boolean;
+  isDraft: boolean;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
@@ -27,8 +38,6 @@ export function EnquiryForm({ listing }: { listing: ListingRow }) {
     });
   }, []);
 
-  const isShare = listing.listing_type === "share";
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
@@ -36,7 +45,7 @@ export function EnquiryForm({ listing }: { listing: ListingRow }) {
 
     const form = new FormData(e.currentTarget);
     const payload = {
-      listingId: listing.id,
+      listingId,
       name: form.get("name"),
       email: form.get("email"),
       phone: form.get("phone"),
@@ -76,6 +85,20 @@ export function EnquiryForm({ listing }: { listing: ListingRow }) {
         <h2 className="text-2xl font-semibold tracking-tight">Enquiry sent</h2>
         <p className="mt-2 text-muted">
           Thanks. Your enquiry has been sent to the seller.
+        </p>
+      </section>
+    );
+  }
+
+  if (isDraft) {
+    return (
+      <section id="enquiry" className="rounded-2xl border border-border bg-surface p-7">
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Interested in this {isShare ? "share" : "aircraft"}?
+        </h2>
+        <p className="mt-2 text-muted">
+          Enquiries are disabled while this listing is in draft. This form
+          will accept enquiries once the listing goes live.
         </p>
       </section>
     );

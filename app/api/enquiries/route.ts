@@ -43,6 +43,13 @@ export async function POST(req: NextRequest) {
   }
   const listing = listingData as ListingRow;
 
+  if (listing.status === "draft") {
+    return NextResponse.json(
+      { error: "Enquiries are disabled while this listing is in draft." },
+      { status: 403 },
+    );
+  }
+
   const { error: insertError } = await supabase.from("enquiries").insert({
     listing_id: input.listingId,
     name: input.name,
