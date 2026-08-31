@@ -1,13 +1,17 @@
 import type { ListingRow } from "@/lib/types/database";
 
-export function EquipmentSection({ listing }: { listing: ListingRow }) {
+export function EquipmentSection({
+  listing,
+  title = "Avionics & equipment",
+}: {
+  listing: ListingRow;
+  title?: string;
+}) {
   if (!listing.equipment?.length) return null;
 
   return (
     <section>
-      <h2 className="text-3xl font-semibold tracking-tight">
-        Avionics &amp; equipment
-      </h2>
+      <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
       <dl className="mt-6 max-w-2xl divide-y divide-border rounded-2xl border border-border bg-surface">
         {listing.equipment.map(({ label, value }) => (
           <div

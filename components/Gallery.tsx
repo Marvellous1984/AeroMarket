@@ -14,42 +14,52 @@ export function Gallery({ images }: { images: ListingImage[] }) {
 
   return (
     <div>
-      {/* Desktop: hero left, 2x2 grid right */}
-      <div className="hidden gap-3 md:grid md:grid-cols-2 md:h-[560px]">
+      {/* Desktop: hero left, 2x2 grid right — or hero full-width when there
+          are no supporting images, so a single-photo listing (a seller
+          only supplying one usable image) doesn't leave an empty grid box */}
+      <div
+        className={
+          supporting.length > 0
+            ? "hidden gap-3 md:grid md:grid-cols-2 md:h-[560px]"
+            : "hidden md:block md:h-[560px]"
+        }
+      >
         <button
           type="button"
           onClick={() => setLightboxIndex(0)}
-          className="relative h-full overflow-hidden rounded-2xl bg-background"
+          className="relative h-full w-full overflow-hidden rounded-2xl bg-background"
         >
           <Image
             src={hero.src}
             alt={hero.alt}
             fill
             priority
-            sizes="58vw"
+            sizes={supporting.length > 0 ? "58vw" : "100vw"}
             className="object-cover"
           />
         </button>
 
-        <div className="grid grid-cols-2 grid-rows-2 gap-3">
-          {supporting.map((img, i) => (
-            <button
-              key={img.src}
-              type="button"
-              onClick={() => setLightboxIndex(i + 1)}
-              className="relative overflow-hidden rounded-2xl bg-background"
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="25vw"
-                loading="lazy"
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
+        {supporting.length > 0 ? (
+          <div className="grid grid-cols-2 grid-rows-2 gap-3">
+            {supporting.map((img, i) => (
+              <button
+                key={img.src}
+                type="button"
+                onClick={() => setLightboxIndex(i + 1)}
+                className="relative overflow-hidden rounded-2xl bg-background"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="25vw"
+                  loading="lazy"
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {/* Mobile: swipeable strip */}

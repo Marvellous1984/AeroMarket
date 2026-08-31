@@ -68,6 +68,10 @@ export interface ListingRow {
   highlights: ListingHighlight[] | null;
   // Avionics/equipment spec rows, e.g. { label: "Engine", value: "..." }.
   equipment: ListingFact[] | null;
+  // Overrides the equipment section's default heading ("Avionics &
+  // equipment") — e.g. a listing combining avionics with general
+  // aircraft/airframe facts might title it "Aircraft & equipment" instead.
+  equipment_title: string | null;
   images: ListingImage[];
   created_at: string;
   published_at: string | null;

@@ -146,7 +146,10 @@ export default async function ListingPage({
             </div>
 
             <div className="mt-14">
-              <EquipmentSection listing={listing} />
+              <EquipmentSection
+                listing={listing}
+                title={listing.equipment_title ?? undefined}
+              />
             </div>
 
             <div className="mt-14">
