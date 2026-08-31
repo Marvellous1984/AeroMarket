@@ -24,3 +24,21 @@ export function getListingSubtitle(listing: ListingRow): string {
 export function getListingTitle(listing: ListingRow): string {
   return `${listing.manufacturer} ${listing.model}`;
 }
+
+// Marketplace copy, not seller-supplied fact — every listing description
+// should close with a short next-action prompt, even when the source
+// material didn't include one. `listing.cta`:
+//   - unset (null/undefined — undefined so this stays safe to call before
+//     the `cta` migration has run, when the column is simply absent):
+//     use the type-based default below.
+//   - "" (explicitly empty): suppress — the description already closes
+//     with its own clear call to action, so don't add a second one.
+//   - any other string: use that exact wording instead of the default.
+export function getListingCta(listing: ListingRow): string | null {
+  if (listing.cta === "") return null;
+  if (listing.cta) return listing.cta;
+
+  return listing.listing_type === "share"
+    ? "Interested in joining the group? Send an enquiry for more information or to discuss the available share."
+    : "Interested in this aircraft? Send an enquiry for more information or to contact the seller.";
+}

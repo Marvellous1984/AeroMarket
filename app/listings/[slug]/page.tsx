@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getListingBySlug } from "@/lib/data/listings";
-import { getListingSubtitle, getListingTitle, isDraftListing } from "@/lib/listing";
+import { getListingCta, getListingSubtitle, getListingTitle, isDraftListing } from "@/lib/listing";
 import { formatPrice } from "@/lib/format";
 import { BRAND_NAME, SITE_URL } from "@/lib/config/brand";
 import { DraftBanner } from "@/components/DraftBanner";
@@ -70,7 +70,15 @@ export default async function ListingPage({
   const badge = `For sale · ${listing.listing_type === "share" ? "Share" : "Aircraft"}`;
   const title = getListingTitle(listing);
   const subtitle = getListingSubtitle(listing);
-  const paragraphs = listing.description?.split("\n\n") ?? [];
+  const cta = getListingCta(listing);
+  // The CTA is marketplace copy, not a seller-supplied fact — appended at
+  // render time as the closing paragraph rather than stored in
+  // `description`, so it never gets mixed up with what the seller actually
+  // said.
+  const paragraphs = [
+    ...(listing.description?.split("\n\n") ?? []),
+    ...(cta ? [cta] : []),
+  ];
   const isDraft = isDraftListing(listing);
 
   // Draft listings are excluded from structured data for public marketplace

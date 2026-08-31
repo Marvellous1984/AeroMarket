@@ -1,0 +1,11 @@
+-- Closing call-to-action shown after a listing's description. This is
+-- marketplace UI/copy, not seller-supplied fact, so it's generated rather
+-- than sourced from the seller's material — see lib/listing.ts
+-- (getListingCta) for the exact rules.
+--
+-- NULL (the default for every existing row) picks a type-based default
+-- ("share" vs "whole") at render time. A listing can set this to an empty
+-- string to suppress the CTA entirely (its description already closes with
+-- its own clear call to action), or to a specific string to override the
+-- default wording.
+alter table listings add column cta text;

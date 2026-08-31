@@ -55,6 +55,9 @@ export interface ListingRow {
   engine_hours_since_rebuild: number | null;
   insured_hull_value: number | null;
   description: string | null;
+  // Closing call-to-action shown after the description. Null uses the
+  // type-based default, "" suppresses it — see lib/listing.ts (getListingCta).
+  cta: string | null;
   group_facts: string[];
   insurance_info: string | null;
   // Scannable checklist version of the pilot/insurance requirements —
