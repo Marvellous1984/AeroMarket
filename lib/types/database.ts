@@ -75,6 +75,13 @@ export interface ListingRow {
   // equipment") — e.g. a listing combining avionics with general
   // aircraft/airframe facts might title it "Aircraft & equipment" instead.
   equipment_title: string | null;
+  // A second, independent labelled fact block — e.g. airframe/engine/prop
+  // hours as literally supplied (not forced into the numeric
+  // engine_hours_since_rebuild column), titled via specs_title. Rendered
+  // with the same EquipmentSection component as `equipment`, just a
+  // separate section when a listing genuinely needs two.
+  specs: ListingFact[] | null;
+  specs_title: string | null;
   images: ListingImage[];
   created_at: string;
   published_at: string | null;

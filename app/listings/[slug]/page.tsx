@@ -155,8 +155,15 @@ export default async function ListingPage({
 
             <div className="mt-14">
               <EquipmentSection
-                listing={listing}
-                title={listing.equipment_title ?? undefined}
+                items={listing.specs}
+                title={listing.specs_title ?? "Aircraft & hours"}
+              />
+            </div>
+
+            <div className="mt-14">
+              <EquipmentSection
+                items={listing.equipment}
+                title={listing.equipment_title ?? "Avionics & equipment"}
               />
             </div>
 
