@@ -32,10 +32,13 @@ export function FeaturedListing({ listing }: { listing: ListingRow }) {
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         ) : null}
-        <span className="absolute left-5 top-5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
-          {listing.listing_type === "share" ? "Share" : "For sale"}
-        </span>
-        {sold ? <SoldBadge className="absolute right-5 top-5" /> : null}
+        {sold ? (
+          <SoldBadge size="md" />
+        ) : (
+          <span className="absolute left-5 top-5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
+            {listing.listing_type === "share" ? "Share" : "For sale"}
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col justify-center gap-4 p-8 sm:p-10 lg:p-12">

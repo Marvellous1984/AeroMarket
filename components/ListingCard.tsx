@@ -31,10 +31,13 @@ export function ListingCard({ listing }: { listing: ListingRow }) {
             className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           />
         ) : null}
-        <span className="absolute left-4 top-4 rounded-full bg-accent px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
-          {listing.listing_type === "share" ? "Share" : "For sale"}
-        </span>
-        {sold ? <SoldBadge className="absolute right-4 top-4" /> : null}
+        {sold ? (
+          <SoldBadge size="sm" />
+        ) : (
+          <span className="absolute left-4 top-4 rounded-full bg-accent px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
+            {listing.listing_type === "share" ? "Share" : "For sale"}
+          </span>
+        )}
       </div>
 
       <div className="space-y-2.5 p-6">

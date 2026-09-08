@@ -38,9 +38,7 @@ export function Gallery({ images, sold = false }: { images: ListingImage[]; sold
             sizes={supporting.length > 0 ? "58vw" : "100vw"}
             className="object-cover"
           />
-          {sold ? (
-            <SoldBadge className="absolute left-4 top-4 text-sm" />
-          ) : null}
+          {sold ? <SoldBadge size="lg" /> : null}
         </button>
 
         {supporting.length > 0 ? (
@@ -84,9 +82,7 @@ export function Gallery({ images, sold = false }: { images: ListingImage[]; sold
               loading={i === 0 ? undefined : "lazy"}
               className="object-cover"
             />
-            {sold && i === 0 ? (
-              <SoldBadge className="absolute left-3 top-3 text-xs" />
-            ) : null}
+            {sold && i === 0 ? <SoldBadge size="lg" /> : null}
           </button>
         ))}
       </div>
