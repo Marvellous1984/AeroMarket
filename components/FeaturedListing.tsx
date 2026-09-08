@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ListingRow } from "@/lib/types/database";
-import { formatPrice } from "@/lib/format";
-import { getListingSubtitle } from "@/lib/listing";
+import { getListingPriceLabel, getListingSubtitle, isSoldListing } from "@/lib/listing";
+import { SoldBadge } from "@/components/SoldBadge";
 
 export function FeaturedListing({ listing }: { listing: ListingRow }) {
   const hero = listing.images[0];
   const subtitle = getListingSubtitle(listing);
+  const sold = isSoldListing(listing);
 
   const quickFacts = [
     listing.year ? String(listing.year) : null,
@@ -34,6 +35,7 @@ export function FeaturedListing({ listing }: { listing: ListingRow }) {
         <span className="absolute left-5 top-5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
           {listing.listing_type === "share" ? "Share" : "For sale"}
         </span>
+        {sold ? <SoldBadge className="absolute right-5 top-5" /> : null}
       </div>
 
       <div className="flex flex-col justify-center gap-4 p-8 sm:p-10 lg:p-12">
@@ -45,7 +47,7 @@ export function FeaturedListing({ listing }: { listing: ListingRow }) {
         </div>
 
         <p className="text-4xl font-semibold tracking-tight text-accent">
-          {formatPrice(listing.price)}
+          {getListingPriceLabel(listing)}
         </p>
 
         {quickFacts.length > 0 ? (

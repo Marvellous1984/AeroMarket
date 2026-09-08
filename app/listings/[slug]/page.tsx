@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getListingBySlug } from "@/lib/data/listings";
-import { getListingCta, getListingSubtitle, getListingTitle, isDraftListing } from "@/lib/listing";
+import {
+  getListingCta,
+  getListingPriceLabel,
+  getListingSubtitle,
+  getListingTitle,
+  isDraftListing,
+  isSoldListing,
+} from "@/lib/listing";
 import { formatPrice } from "@/lib/format";
 import { BRAND_NAME, SITE_URL } from "@/lib/config/brand";
 import { DraftBanner } from "@/components/DraftBanner";
@@ -16,6 +23,9 @@ import { EnquiryForm } from "@/components/EnquiryForm";
 import { ShareButton } from "@/components/ShareButton";
 import { StickyMobileCta } from "@/components/StickyMobileCta";
 import { SellerMiniCta } from "@/components/SellerMiniCta";
+import { SoldStatusPanel } from "@/components/SoldStatusPanel";
+import { BuyerCta } from "@/components/BuyerCta";
+import { SellerCtaSection } from "@/components/SellerCtaSection";
 
 export async function generateMetadata({
   params,
@@ -25,9 +35,10 @@ export async function generateMetadata({
   const listing = await getListingBySlug(params.slug);
   if (!listing) return {};
 
-  const title = `${getListingTitle(listing)} · ${getListingSubtitle(listing)}`;
+  const isSold = isSoldListing(listing);
+  const title = `${getListingTitle(listing)} · ${getListingSubtitle(listing)}${isSold ? " · Sold" : ""}`;
   const description = [
-    formatPrice(listing.price),
+    isSold ? "Sold" : formatPrice(listing.price),
     listing.location,
     listing.engine_summary,
   ]
@@ -67,10 +78,15 @@ export default async function ListingPage({
   const listing = await getListingBySlug(params.slug);
   if (!listing) notFound();
 
-  const badge = `For sale · ${listing.listing_type === "share" ? "Share" : "Aircraft"}`;
   const title = getListingTitle(listing);
   const subtitle = getListingSubtitle(listing);
-  const cta = getListingCta(listing);
+  const isDraft = isDraftListing(listing);
+  const isSold = isSoldListing(listing);
+  const badge = `${isSold ? "Sold" : "For sale"} · ${listing.listing_type === "share" ? "Share" : "Aircraft"}`;
+  // A sold listing's description shouldn't close with marketplace copy that
+  // invites an enquiry ("Send an enquiry...") — the sold-state CTAs cover
+  // that instead (SoldStatusPanel / BuyerCta / SellerCtaSection below).
+  const cta = isSold ? null : getListingCta(listing);
   // The CTA is marketplace copy, not a seller-supplied fact — appended at
   // render time as the closing paragraph rather than stored in
   // `description`, so it never gets mixed up with what the seller actually
@@ -79,10 +95,12 @@ export default async function ListingPage({
     ...(listing.description?.split("\n\n") ?? []),
     ...(cta ? [cta] : []),
   ];
-  const isDraft = isDraftListing(listing);
 
   // Draft listings are excluded from structured data for public marketplace
   // inventory — they aren't for sale yet as far as the outside world knows.
+  // A sold listing keeps its structured data (still a real, historical
+  // listing) but must never claim to be in stock or expose a price that
+  // would read as still active.
   const jsonLd = isDraft
     ? null
     : {
@@ -93,9 +111,11 @@ export default async function ListingPage({
         image: listing.images.map((img) => `${SITE_URL}${img.src}`),
         offers: {
           "@type": "Offer",
-          ...(listing.price !== null ? { price: listing.price } : {}),
+          ...(!isSold && listing.price !== null ? { price: listing.price } : {}),
           priceCurrency: "GBP",
-          availability: "https://schema.org/InStock",
+          availability: isSold
+            ? "https://schema.org/SoldOut"
+            : "https://schema.org/InStock",
           url: `${SITE_URL}/listings/${listing.slug}`,
         },
       };
@@ -113,7 +133,7 @@ export default async function ListingPage({
       {isDraft ? <DraftBanner /> : null}
 
       <div className="mx-auto max-w-[1320px] px-5 pb-28 pt-8 sm:px-8 sm:pb-16 lg:px-10">
-        <Gallery images={listing.images} />
+        <Gallery images={listing.images} sold={isSold} />
 
         <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_400px] lg:items-start lg:gap-16">
           <div className="min-w-0">
@@ -132,10 +152,16 @@ export default async function ListingPage({
 
             <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
               <p className="text-4xl font-semibold tracking-tight text-accent sm:text-5xl">
-                {formatPrice(listing.price)}
+                {getListingPriceLabel(listing)}
               </p>
               <ShareButton title={title} text={`${title} · ${subtitle}`} />
             </div>
+
+            {isSold ? (
+              <div className="mt-6">
+                <SoldStatusPanel listing={listing} />
+              </div>
+            ) : null}
 
             <div className="mt-10">
               <HighlightCards listing={listing} />
@@ -178,20 +204,30 @@ export default async function ListingPage({
             <div className="mt-14">
               <InsuranceSection listing={listing} />
             </div>
+
+            {isSold ? (
+              <div className="mt-14">
+                <SellerCtaSection />
+              </div>
+            ) : null}
           </div>
 
           <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
-            <EnquiryForm
-              listingId={listing.id}
-              isShare={listing.listing_type === "share"}
-              isDraft={isDraft}
-            />
+            {isSold ? (
+              <BuyerCta listing={listing} />
+            ) : (
+              <EnquiryForm
+                listingId={listing.id}
+                isShare={listing.listing_type === "share"}
+                isDraft={isDraft}
+              />
+            )}
             <SellerMiniCta />
           </aside>
         </div>
       </div>
 
-      {isDraft ? null : <StickyMobileCta price={listing.price} />}
+      {isDraft || isSold ? null : <StickyMobileCta price={listing.price} />}
     </>
   );
 }

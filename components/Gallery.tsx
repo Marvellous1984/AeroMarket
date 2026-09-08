@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { ListingImage } from "@/lib/types/database";
+import { SoldBadge } from "@/components/SoldBadge";
 
-export function Gallery({ images }: { images: ListingImage[] }) {
+export function Gallery({ images, sold = false }: { images: ListingImage[]; sold?: boolean }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   if (images.length === 0) return null;
@@ -37,6 +38,9 @@ export function Gallery({ images }: { images: ListingImage[] }) {
             sizes={supporting.length > 0 ? "58vw" : "100vw"}
             className="object-cover"
           />
+          {sold ? (
+            <SoldBadge className="absolute left-4 top-4 text-sm" />
+          ) : null}
         </button>
 
         {supporting.length > 0 ? (
@@ -80,6 +84,9 @@ export function Gallery({ images }: { images: ListingImage[] }) {
               loading={i === 0 ? undefined : "lazy"}
               className="object-cover"
             />
+            {sold && i === 0 ? (
+              <SoldBadge className="absolute left-3 top-3 text-xs" />
+            ) : null}
           </button>
         ))}
       </div>

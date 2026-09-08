@@ -1,0 +1,21 @@
+-- G-AVSF (Piper PA-28 Cherokee 180, 1/8 share) is BuySellAircraft's first
+-- confirmed completed sale. Marking it 'sold' rather than deleting/redirecting
+-- it — see supabase/migrations/0007_public_sold_listings.sql for the RLS
+-- change that keeps it publicly visible, and lib/listing.ts (isSoldListing /
+-- getListingPriceLabel / getBrowseHref) for the reusable status logic the
+-- app now applies to any listing in this state.
+--
+-- The original asking price (£8,000) is deliberately left untouched in the
+-- `price` column for internal/data reasons — every public price display now
+-- goes through getListingPriceLabel(), which renders "Sold" instead once
+-- status = 'sold', so it never appears as an active price. The actual
+-- final sale price is NOT stored anywhere in this database, this file
+-- included, and must not be added anywhere public-facing.
+--
+-- Requires 0007_public_sold_listings.sql to have been run first, or this
+-- listing will disappear from getListings() (homepage/aircraft/shares/
+-- sitemap) under the old "active only" RLS policy while still being
+-- reachable directly via its slug (getListingBySlug uses the admin client
+-- regardless of status).
+update listings set status = 'sold'
+where slug = 'piper-pa28-cherokee-180-share';

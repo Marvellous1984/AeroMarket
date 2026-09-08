@@ -3,8 +3,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import type { ListingRow, ListingType } from "@/lib/types/database";
 
 // Public browsing/discovery surfaces (homepage, /aircraft, /shares, sitemap)
-// call this — it only ever returns live ("active") listings, so drafts never
-// appear in navigation, search results, or the sitemap.
+// call this — it returns live ("active") and sold listings, so drafts never
+// appear in navigation, search results, or the sitemap, but a sold listing
+// stays visible as marketplace proof (see lib/listing.ts isSoldListing).
+// Sold rows are always sorted after active ones (the stable sort below only
+// ever moves "sold" rows later, preserving the published_at ordering within
+// each group) so live inventory never gets crowded out.
 export async function getListings(filter?: {
   listingType?: ListingType;
 }): Promise<ListingRow[]> {
@@ -12,7 +16,7 @@ export async function getListings(filter?: {
   let query = supabase
     .from("listings")
     .select("*")
-    .eq("status", "active")
+    .in("status", ["active", "sold"])
     .order("published_at", { ascending: false });
 
   if (filter?.listingType) {
@@ -21,7 +25,12 @@ export async function getListings(filter?: {
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data as ListingRow[] | null) ?? [];
+  const listings = (data as ListingRow[] | null) ?? [];
+
+  return listings.sort((a, b) => {
+    if (a.status === b.status) return 0;
+    return a.status === "sold" ? 1 : -1;
+  });
 }
 
 // The individual listing page looks up a listing by its exact slug, which

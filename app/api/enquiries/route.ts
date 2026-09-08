@@ -50,6 +50,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  if (listing.status === "sold") {
+    return NextResponse.json(
+      { error: "This listing has been sold and enquiries are closed." },
+      { status: 403 },
+    );
+  }
+
   const { error: insertError } = await supabase.from("enquiries").insert({
     listing_id: input.listingId,
     name: input.name,
